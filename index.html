@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Palato — Gastronomia, Vinhos & Viagens</title>
+  <meta name="description" content="O universo gastronômico de Sergio Nedal: receitas autorais, harmonizações de vinho e roteiros de viagem gastronômica pelo mundo.">
+  <meta property="og:title" content="Virtual Palato — Gastronomia, Vinhos & Viagens">
+  <meta property="og:description" content="Receitas autorais, harmonizações de vinho e roteiros de viagem com Sergio Nedal.">
+  <meta property="og:image" content="https://live.staticflickr.com/65535/51274730690_0a1d596be2_c.jpg">
+  <meta property="og:url" content="https://virtualpalato.com">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="Virtual Palato - Início">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="19" cy="19" r="18" stroke="#C9A84C" stroke-width="1.5"/>
+  <path d="M19 7 C14.5 7 10 11.5 10 16.5 C10 22.5 14.5 26 19 28 C23.5 26 28 22.5 28 16.5 C28 11.5 23.5 7 19 7Z" fill="none" stroke="#C9A84C" stroke-width="1.3"/>
+  <path d="M11.5 16.5 Q19 21 26.5 16.5" stroke="#C9A84C" stroke-width="0.9" fill="none"/>
+  <path d="M19 28 L19 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M15 33 L23 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+      <span class="nav-logo-text">Virtual <span class="gold">Palato</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#receitas">Receitas</a>
+      <a href="#videos">Vídeos</a>
+      <a href="#viagens">Viagens</a>
+      <a href="#vinhos">Vinhos</a>
+      <a href="#sobre">Sobre</a>
+    </div>
+    <div class="nav-actions">
+      <a href="https://www.facebook.com/Virtual.Palato/" target="_blank" rel="noopener" class="btn-social" title="Facebook do Virtual Palato">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <span>Facebook</span>
+      </a>
+      <a href="https://www.youtube.com/@virtualpalato" target="_blank" rel="noopener" class="btn-social yt" title="Canal YouTube do Virtual Palato">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        <span>YouTube</span>
+      </a>
+    </div>
+    <button class="nav-toggle" onclick="document.getElementById('navMobile').classList.toggle('open')" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#receitas" onclick="document.getElementById('navMobile').classList.remove('open')">Receitas</a>
+    <a href="#videos" onclick="document.getElementById('navMobile').classList.remove('open')">Vídeos</a>
+    <a href="#viagens" onclick="document.getElementById('navMobile').classList.remove('open')">Viagens</a>
+    <a href="#vinhos" onclick="document.getElementById('navMobile').classList.remove('open')">Vinhos</a>
+    <a href="#sobre" onclick="document.getElementById('navMobile').classList.remove('open')">Sobre</a>
+    <div class="nav-mobile-social">
+      <a href="https://www.facebook.com/Virtual.Palato/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.youtube.com/@virtualpalato" target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" style="background-image:url('https://live.staticflickr.com/65535/51274730690_0a1d596be2_c.jpg')"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">GASTRONOMIA · VINHOS · VIAGENS</p>
+    <h1>Virtual <span class="gold">Palato</span></h1>
+    <p class="hero-sub">O universo gastronômico de Sergio Nedal — receitas autorais, harmonizações de vinho e destinos ao redor do mundo.</p>
+    <div class="hero-btns">
+      <a href="#receitas" class="btn-primary">Ver Receitas</a>
+      <a href="#viagens" class="btn-outline">Roteiros de Viagem</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n">182+</span><span class="stat-l">Receitas</span></div>
+    <div class="stat"><span class="stat-n">50+</span><span class="stat-l">Vídeos</span></div>
+    <div class="stat"><span class="stat-n">38+</span><span class="stat-l">Posts de Viagem</span></div>
+    <div class="stat"><span class="stat-n">120+</span><span class="stat-l">Posts de Vinho</span></div>
+  </div>
+</section>
+
+<!-- RECEITAS -->
+<section class="section" id="receitas">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">RECEITAS AUTORAIS</span>
+      <h2>Cozinha com <span class="gold">Alma</span></h2>
+      <p>Receitas desenvolvidas por Sergio Nedal com ingredientes frescos, técnicas clássicas e um toque pessoal inconfundível — da cozinha israelense ao asado uruguaio.</p>
+    </div>
+    <div class="grid-4">
+      <article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4316/35825225030_12f3a208ef.jpg" alt="Frango Caipira com Toque de Syrah Israelense" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">AVES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/frango-caipira-com-toque-de-syrah-israelense/" target="_blank" rel="noopener">Frango Caipira com Toque de Syrah Israelense</a></h3>
+        <p>O frango caipira é um achado que o Carrefour sempre oferece. No caso eu usei as coxas e sobrecoxas, marinei com vinho tinto, molho…</p>
+        <div class="card-footer">
+          <span class="card-date">2017-07</span>
+          <a href="/posts/frango-caipira-com-toque-de-syrah-israelense/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4339/37217763852_2a7aec573d.jpg" alt="Atum Selado ao Molho Teriaki com Nabo Ralado e Pepino" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">PEIXES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/atum-selado-ao-molho-teriaki-com-nabo-ralado-e-pepino/" target="_blank" rel="noopener">Atum Selado ao Molho Teriaki com Nabo Ralado e Pepino</a></h3>
+        <p>O atum é um dos peixes mais versáteis da cozinha. Selar o atum rapidamente em frigideira bem quente com azeite, deixando o interio…</p>
+        <div class="card-footer">
+          <span class="card-date">2017-09</span>
+          <a href="/posts/atum-selado-ao-molho-teriaki-com-nabo-ralado-e-pepino/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://web.archive.org/web/20230507212636im_/https://virtualpalato.com.br/wp-content/uploads/DSC_4841-2.jpg" alt="Curry de Frango e Cogumelos, Tríplice Quinoa e Couve Mineira" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">AVES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/curry-de-frango-e-cogumelos-triplice-quinoa-e-couve-mineira-dieta-com-muito-sabor/" target="_blank" rel="noopener">Curry de Frango e Cogumelos, Tríplice Quinoa e Couve Mineira</a></h3>
+        <p>Curry de frango e cogumelos, tríplice quinoa e couve mineira: dieta com muito sabor. Preparar o Curry de Frango como é feito na Ín…</p>
+        <div class="card-footer">
+          <span class="card-date">2018-05</span>
+          <a href="/posts/curry-de-frango-e-cogumelos-triplice-quinoa-e-couve-mineira-dieta-com-muito-sabor/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4239/34764998723_e1c7419da6.jpg" alt="Tuna Balls — Bolinhos de Atum com Molho Apimentado" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">PEIXES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/" target="_blank" rel="noopener">Tuna Balls — Bolinhos de Atum com Molho Apimentado</a></h3>
+        <p>Uma receita de inspiração israelense: bolinhos de atum enlatado misturado com cebola roxa picada, salsinha, pimenta dedo-de-moça, …</p>
+        <div class="card-footer">
+          <span class="card-date">2017-06</span>
+          <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://live.staticflickr.com/5815/29970222153_809c48bc16.jpg" alt="Bife Maturado com Beringela Recheada à Moda Marroquina" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">CARNES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/bife-maturado-com-beringela-recheada-a-moda-marroquina/" target="_blank" rel="noopener">Bife Maturado com Beringela Recheada à Moda Marroquina</a></h3>
+        <p>A carne foi maturada no gelo por 30 dias — um pedaço de entrecot. A maturação a seco concentra os sabores e amacia as fibras de fo…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-06</span>
+          <a href="/posts/bife-maturado-com-beringela-recheada-a-moda-marroquina/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm1.staticflickr.com/610/32215160430_df00037aa9.jpg" alt="Truta Dourada com Ervas Frescas e Limão Siciliano" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">PEIXES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/" target="_blank" rel="noopener">Truta Dourada com Ervas Frescas e Limão Siciliano</a></h3>
+        <p>A truta é um peixe de água doce com sabor delicado e carne firme. Tempere com sal, pimenta do reino, alecrim, tomilho e fatias de …</p>
+        <div class="card-footer">
+          <span class="card-date">2017-02</span>
+          <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://live.staticflickr.com/7018/6588364071_4159585fcb_b.jpg" alt="Queijo Caseiro e Vinho Israelense — Combinação Perfeita" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">BEBIDAS</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/queijo-caseiro-e-vinho-israeli-combinacao-perfeita-para-as-festas/" target="_blank" rel="noopener">Queijo Caseiro e Vinho Israelense — Combinação Perfeita</a></h3>
+        <p>Uma das maiores deficiências no mercado de vinho brasileiro é o desconhecimento dos vinhos israelenses. Israel produz vinhos de al…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-06</span>
+          <a href="/posts/queijo-caseiro-e-vinho-israeli-combinacao-perfeita-para-as-festas/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4316/35825225030_12f3a208ef.jpg" alt="Ravioli de Ossobuco — Receita Clássica Italiana" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">MASSAS</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/ravioli-de-ossobuco/" target="_blank" rel="noopener">Ravioli de Ossobuco — Receita Clássica Italiana</a></h3>
+        <p>O primeiro ossobuco com spaguetti que comi foi em Paris, no famoso Mercado das Pulgas. Como não consigo esquecer aquele sabor, res…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-05</span>
+          <a href="/posts/ravioli-de-ossobuco/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4239/34764998723_e1c7419da6.jpg" alt="Tajine de Almôndegas com Cuscuz de Aipim" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">FÁCIL DEMAIS</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/comida-brasileira-com-cara-de-marrocos-tajine-de-almondegas-com-cuscus-de-aipim-acompanhado-de-cogumelos-frescos-e-espinafre/" target="_blank" rel="noopener">Tajine de Almôndegas com Cuscuz de Aipim</a></h3>
+        <p>Comida brasileira com cara de Marrocos. Almôndegas de carne bovina com tempero marroquino — cominho, coentro, canela, páprica defu…</p>
+        <div class="card-footer">
+          <span class="card-date">2018-05</span>
+          <a href="/posts/comida-brasileira-com-cara-de-marrocos-tajine-de-almondegas-com-cuscus-de-aipim-acompanhado-de-cogumelos-frescos-e-espinafre/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://live.staticflickr.com/5815/29970222153_809c48bc16.jpg" alt="Feijão Carioca com Vinho Português Carlota Joaquina" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">FÁCIL DEMAIS</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/feijao-carioca-com-vinho-portugues-carlota-joaquina/" target="_blank" rel="noopener">Feijão Carioca com Vinho Português Carlota Joaquina</a></h3>
+        <p>Nossa homenagem no dia de Zumbi dos Palmares. Receita criada por escravos, simples e para curtir com um vinho que tem história. O …</p>
+        <div class="card-footer">
+          <span class="card-date">2018-11</span>
+          <a href="/posts/feijao-carioca-com-vinho-portugues-carlota-joaquina/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm1.staticflickr.com/610/32215160430_df00037aa9.jpg" alt="Pão Caseiro Rústico com Fermento Natural" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">PADARIA</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/o-assunto-e-pao-frances/" target="_blank" rel="noopener">Pão Caseiro Rústico com Fermento Natural</a></h3>
+        <p>Minha viagem ao sul da França aumentou ainda mais minha fome por orgânicos e o pão foi uma das coisas mais legais que trouxe de lá…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-07</span>
+          <a href="/posts/o-assunto-e-pao-frances/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4316/35825225030_12f3a208ef.jpg" alt="Asado de Tira, Pão e Vinho Tannat Narbona" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">CARNES</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/virtual-palato-com-sergio-nedal-numa-edicao-nova-com-ingredientes-especiais-comida-integral-e-organica-pao-caseiro-raw-food-na-brasa-asado-de-tira-pao-e-vinho-batata-doce-couve-kale-pimenta/" target="_blank" rel="noopener">Asado de Tira, Pão e Vinho Tannat Narbona</a></h3>
+        <p>Virtual Palato com Sergio Nedal, numa edição nova com ingredientes especiais, comida integral e orgânica. Raw Food na brasa: Asado…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-05</span>
+          <a href="/posts/virtual-palato-com-sergio-nedal-numa-edicao-nova-com-ingredientes-especiais-comida-integral-e-organica-pao-caseiro-raw-food-na-brasa-asado-de-tira-pao-e-vinho-batata-doce-couve-kale-pimenta/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+    </div>
+    <div class="section-footer">
+      <a href="/receitas/" target="_blank" rel="noopener" class="btn-outline">Ver Todas as Receitas no Arquivo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- VÍDEOS -->
+<section class="section section-dark" id="videos">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">CANAL YOUTUBE</span>
+      <h2>Receitas em <span class="gold">Vídeo</span></h2>
+      <p>Assista ao Sergio preparar suas receitas, visitar vinícolas e explorar destinos gastronômicos ao redor do mundo.</p>
+    </div>
+    <div class="grid-4">
+      <article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=_1ypOnJO_3U" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/_1ypOnJO_3U/hqdefault.jpg" alt="Bolinho de Bacalhau à Moda do Porto com Edu Roly" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/_1ypOnJO_3U/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=_1ypOnJO_3U" target="_blank" rel="noopener">Bolinho de Bacalhau à Moda do Porto com Edu Roly</a></h3>
+        <p>Um rolezinho chique pelo Porto com o parceiro Edu Roly, degustando o clássico bolinho de bacalhau po…</p>
+        <div class="card-footer">
+          <span class="card-date">2022-10</span>
+          <a href="https://www.youtube.com/watch?v=_1ypOnJO_3U" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=O0zZZUobX1o" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/O0zZZUobX1o/hqdefault.jpg" alt="Larica à la Uruguaia — Montevideo 2021" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/O0zZZUobX1o/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=O0zZZUobX1o" target="_blank" rel="noopener">Larica à la Uruguaia — Montevideo 2021</a></h3>
+        <p>Estivemos em Montevideo na edição de 2021 da Expocannabis, encontramos amigos e fomos comer e beber …</p>
+        <div class="card-footer">
+          <span class="card-date">2022-01</span>
+          <a href="https://www.youtube.com/watch?v=O0zZZUobX1o" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=BORyax6L7dA" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/BORyax6L7dA/hqdefault.jpg" alt="Eduroly em Portugal: o Vinho Milenar Feito na Talha" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/BORyax6L7dA/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=BORyax6L7dA" target="_blank" rel="noopener">Eduroly em Portugal: o Vinho Milenar Feito na Talha</a></h3>
+        <p>Boas parcerias duram para sempre. No caso do Eduroly, nossa parceria começou nos anos 80. Vinhos de …</p>
+        <div class="card-footer">
+          <span class="card-date">2021-12</span>
+          <a href="https://www.youtube.com/watch?v=BORyax6L7dA" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=X53fcppb6AI" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/X53fcppb6AI/hqdefault.jpg" alt="Visita e Degustação na Villa Santa Maria: os Vinhos Brandina" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/X53fcppb6AI/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=X53fcppb6AI" target="_blank" rel="noopener">Visita e Degustação na Villa Santa Maria: os Vinhos Brandina</a></h3>
+        <p>Muita gente desconhece o trabalho de blogueiros como o Virtual Palato. Nosso blog se dedica a trazer…</p>
+        <div class="card-footer">
+          <span class="card-date">2021-09</span>
+          <a href="https://www.youtube.com/watch?v=X53fcppb6AI" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=dMptEG0twsA" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/dMptEG0twsA/hqdefault.jpg" alt="Sampa: Gastronomia durante a Pandemia" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/dMptEG0twsA/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=dMptEG0twsA" target="_blank" rel="noopener">Sampa: Gastronomia durante a Pandemia</a></h3>
+        <p>Estive em SP durante a Pandemia. Fizemos a Dutra em algumas horas e encontramos uma cidade diferente…</p>
+        <div class="card-footer">
+          <span class="card-date">2021-06</span>
+          <a href="https://www.youtube.com/watch?v=dMptEG0twsA" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=ev9cMbnvs3s" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg" alt="Visita à Vinícola Juan Carrau: a Casa do Amat" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=ev9cMbnvs3s" target="_blank" rel="noopener">Visita à Vinícola Juan Carrau: a Casa do Amat</a></h3>
+        <p>Fui visitar a vinícola Juan Carrau que fica em Montevideo. Já havia degustado alguns de seus vinhos …</p>
+        <div class="card-footer">
+          <span class="card-date">2019-12</span>
+          <a href="https://www.youtube.com/watch?v=ev9cMbnvs3s" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=6ftqMuZHadA" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/6ftqMuZHadA/hqdefault.jpg" alt="Paris-Bordeaux ao Vinho — Bio Expo 2019" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/6ftqMuZHadA/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=6ftqMuZHadA" target="_blank" rel="noopener">Paris-Bordeaux ao Vinho — Bio Expo 2019</a></h3>
+        <p>Fomos conferir a Bio Expo Bordeaux. Encontramos produtores comprometidos com a viticultura orgânica …</p>
+        <div class="card-footer">
+          <span class="card-date">2019-07</span>
+          <a href="https://www.youtube.com/watch?v=6ftqMuZHadA" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+<article class="card card-video">
+      <div class="card-img-wrap">
+        <a href="https://www.youtube.com/watch?v=9QhejPiBkjU" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/9QhejPiBkjU/hqdefault.jpg" alt="Lulas Grelhadas com Arroz da Tinta" loading="lazy"
+               onerror="this.onerror=null;this.src='https://img.youtube.com/vi/9QhejPiBkjU/mqdefault.jpg'">
+          <div class="play-btn" aria-label="Assistir no YouTube">▶</div>
+        </a>
+        <span class="card-tag">VÍDEO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://www.youtube.com/watch?v=9QhejPiBkjU" target="_blank" rel="noopener">Lulas Grelhadas com Arroz da Tinta</a></h3>
+        <p>Quando vejo lula, já imagino a sua tinta. O arroz negro com tinta de lula é um clássico mediterrâneo…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-09</span>
+          <a href="https://www.youtube.com/watch?v=9QhejPiBkjU" target="_blank" rel="noopener" class="card-link">Assistir →</a>
+        </div>
+      </div>
+    </article>
+    </div>
+    <div class="section-footer">
+      <a href="https://www.youtube.com/@virtualpalato" target="_blank" rel="noopener" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        Inscreva-se no Canal
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- VIAGENS -->
+<section class="section" id="viagens">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">ROTEIROS GASTRONÔMICOS</span>
+      <h2>Viagens pelo <span class="gold">Mundo</span></h2>
+      <p>De Israel ao Uruguai, de Bordeaux a Barcelona — cada destino é uma nova descoberta gastronômica e enológica com Sergio Nedal.</p>
+    </div>
+    <div class="grid-destinos">
+      <div class="destino-card">
+      <div class="destino-img" style="background-image:url('https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg')">
+        <div class="destino-overlay">
+          <span class="destino-emoji">🇮🇱</span>
+          <h3>Israel</h3>
+          <p>Vinícolas do Galil, culinária judaica e sabores do Oriente Médio</p>
+          <span class="destino-count">13 posts</span>
+        </div>
+      </div>
+    </div>
+<div class="destino-card">
+      <div class="destino-img" style="background-image:url('https://img.youtube.com/vi/O0zZZUobX1o/hqdefault.jpg')">
+        <div class="destino-overlay">
+          <span class="destino-emoji">🇺🇾</span>
+          <h3>Uruguai</h3>
+          <p>Bodegas, asados e a rota do Tannat</p>
+          <span class="destino-count">25 posts</span>
+        </div>
+      </div>
+    </div>
+<div class="destino-card">
+      <div class="destino-img" style="background-image:url('https://img.youtube.com/vi/6ftqMuZHadA/hqdefault.jpg')">
+        <div class="destino-overlay">
+          <span class="destino-emoji">🇫🇷</span>
+          <h3>França · Bordeaux</h3>
+          <p>Paris, Bordeaux e os grandes châteaux biodinâmicos</p>
+          <span class="destino-count">15 posts</span>
+        </div>
+      </div>
+    </div>
+<div class="destino-card">
+      <div class="destino-img" style="background-image:url('https://img.youtube.com/vi/7EgLodcPnTc/hqdefault.jpg')">
+        <div class="destino-overlay">
+          <span class="destino-emoji">🇺🇸</span>
+          <h3>EUA</h3>
+          <p>Boston, New York, DC e destilarias artesanais</p>
+          <span class="destino-count">27 posts</span>
+        </div>
+      </div>
+    </div>
+<div class="destino-card">
+      <div class="destino-img" style="background-image:url('https://img.youtube.com/vi/X53fcppb6AI/hqdefault.jpg')">
+        <div class="destino-overlay">
+          <span class="destino-emoji">🇪🇸</span>
+          <h3>Espanha · Barcelona</h3>
+          <p>La Boqueria, vinhos catalães e tapas autênticas</p>
+          <span class="destino-count">9 posts</span>
+        </div>
+      </div>
+    </div>
+<div class="destino-card">
+      <div class="destino-img" style="background-image:url('https://img.youtube.com/vi/BORyax6L7dA/hqdefault.jpg')">
+        <div class="destino-overlay">
+          <span class="destino-emoji">🇵🇹</span>
+          <h3>Portugal</h3>
+          <p>Porto, Lisboa, vinhos do Douro e da talha alentejana</p>
+          <span class="destino-count">7 posts</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="section-footer">
+      <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/category/viagem/" target="_blank" rel="noopener" class="btn-outline">Ver Todos os Roteiros no Arquivo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- VINHOS -->
+<section class="section section-dark" id="vinhos">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">HARMONIZAÇÕES & ANÁLISES</span>
+      <h2>O Mundo dos <span class="gold">Vinhos</span></h2>
+      <p>Análises, harmonizações e descobertas enológicas de vinhos de Israel, Uruguai, França, Portugal, Espanha e Brasil.</p>
+    </div>
+    <div class="grid-4">
+      <article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4316/35825225030_12f3a208ef.jpg" alt="Chardonnay e Malagousia: Gregos Chegando ao Rio" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">BEBIDAS</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/" target="_blank" rel="noopener">Chardonnay e Malagousia: Gregos Chegando ao Rio</a></h3>
+        <p>O calor do Rio nesta época do ano pede um toque refrescante e diferente. Atento às novidades, o Virtual Palato…</p>
+        <div class="card-footer">
+          <span class="card-date">2021-02</span>
+          <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm1.staticflickr.com/610/32215160430_df00037aa9.jpg" alt="Seival by Miolo: Uma Surpresa Brasileira na Casa Tricana" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">VINHO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/seival-by-miolo-uma-surpresa-brasileira-na-casa-tricana/" target="_blank" rel="noopener">Seival by Miolo: Uma Surpresa Brasileira na Casa Tricana</a></h3>
+        <p>Casta portuguesa integrada na Campanha Gaúcha. Seival by Miolo Tempranillo — surpreendente, aveludado e frutad…</p>
+        <div class="card-footer">
+          <span class="card-date">2019-05</span>
+          <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/seival-by-miolo-uma-surpresa-brasileira-na-casa-tricana/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://live.staticflickr.com/7018/6588364071_4159585fcb_b.jpg" alt="Top 4 Vinhos de Boutique de Israel" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">VINHO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/top-4-vinhos-de-boutique-de-israel-3/" target="_blank" rel="noopener">Top 4 Vinhos de Boutique de Israel</a></h3>
+        <p>Israel produz vinhos de altíssima qualidade que poucos conhecem. Quatro rótulos de pequenas vinícolas que vale…</p>
+        <div class="card-footer">
+          <span class="card-date">2016-09</span>
+          <a href="/posts/top-4-vinhos-de-boutique-de-israel-3/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4239/34764998723_e1c7419da6.jpg" alt="Almaden Tannat 2014 by Miolo — Gaúcho de Qualidade" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">VINHO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/almaden-tannat-2014-by-miolo/" target="_blank" rel="noopener">Almaden Tannat 2014 by Miolo — Gaúcho de Qualidade</a></h3>
+        <p>O Tannat é a uva símbolo do Uruguai, mas também produz vinhos excepcionais no Rio Grande do Sul. Este Almaden …</p>
+        <div class="card-footer">
+          <span class="card-date">2015-08</span>
+          <a href="/posts/almaden-tannat-2014-by-miolo/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4316/35825225030_12f3a208ef.jpg" alt="Novo Mundo Vinho Velho: Tannat e Syrah Uruguaio" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">VINHO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/novo-mundo-vinho-velho-tannat-e-syrah-um-corte-uruguaio-que-impressiona/" target="_blank" rel="noopener">Novo Mundo Vinho Velho: Tannat e Syrah Uruguaio</a></h3>
+        <p>Um corte uruguaio que impressiona: Tannat e Syrah da Bodega Bouza. Novo mundo com técnica do velho mundo.…</p>
+        <div class="card-footer">
+          <span class="card-date">2016-04</span>
+          <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/novo-mundo-vinho-velho-tannat-e-syrah-um-corte-uruguaio-que-impressiona/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://live.staticflickr.com/5815/29970222153_809c48bc16.jpg" alt="Vinhos de Israel em 2016 — Carmel Selected Cabernet" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">VINHO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/vinhos-de-israel-em-2016-carmel-selected-2014-um-blend-cabernet/" target="_blank" rel="noopener">Vinhos de Israel em 2016 — Carmel Selected Cabernet</a></h3>
+        <p>O Carmel Selected 2014 é um blend Cabernet Sauvignon e Merlot que representa bem a evolução dos vinhos israele…</p>
+        <div class="card-footer">
+          <span class="card-date">2016-06</span>
+          <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/vinhos-de-israel-em-2016-carmel-selected-2014-um-blend-cabernet/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm1.staticflickr.com/610/32215160430_df00037aa9.jpg" alt="Bife Apimentado com Bordeaux e Preço Bom" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">HARMONIZAÇÃO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/bife-apimentado-com-bordeaux-e-preco-bom-8/" target="_blank" rel="noopener">Bife Apimentado com Bordeaux e Preço Bom</a></h3>
+        <p>Um Bordeaux acessível que harmoniza perfeitamente com bife apimentado. A prova de que não é preciso gastar mui…</p>
+        <div class="card-footer">
+          <span class="card-date">2015-03</span>
+          <a href="/posts/bife-apimentado-com-bordeaux-e-preco-bom-8/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+<article class="card">
+      <div class="card-img-wrap">
+        <img src="https://farm5.staticflickr.com/4339/37217763852_2a7aec573d.jpg" alt="Entrecôt com Bordeaux — A Harmonização Clássica" loading="lazy"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ev9cMbnvs3s/hqdefault.jpg'">
+        <span class="card-tag">HARMONIZAÇÃO</span>
+      </div>
+      <div class="card-body">
+        <h3><a href="/posts/entrecot-com-bordeaux/" target="_blank" rel="noopener">Entrecôt com Bordeaux — A Harmonização Clássica</a></h3>
+        <p>O entrecôt grelhado com um Bordeaux de bom corpo é uma das harmonizações mais clássicas da gastronomia frances…</p>
+        <div class="card-footer">
+          <span class="card-date">2016-11</span>
+          <a href="/posts/entrecot-com-bordeaux/" target="_blank" rel="noopener" class="card-link">Ler mais →</a>
+        </div>
+      </div>
+    </article>
+    </div>
+    <div class="section-footer">
+      <a href="https://web.archive.org/web/20230507212636/https://virtualpalato.com.br/category/bebidas/" target="_blank" rel="noopener" class="btn-outline">Ver Todos os Posts de Vinho →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="section section-sobre" id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-img">
+        <img src="https://live.staticflickr.com/7018/6588364071_4159585fcb_b.jpg"
+             alt="Sergio Nedal — Virtual Palato" loading="lazy">
+      </div>
+      <div class="sobre-texto">
+        <span class="section-tag">O CRIADOR</span>
+        <h2>Sergio <span class="gold">Nedal</span></h2>
+        <p>Jornalista, gastrônomo e viajante apaixonado por vinhos, Sergio Nedal criou o Virtual Palato para compartilhar sua visão única da gastronomia — onde cada receita conta uma história e cada vinho abre uma janela para o mundo.</p>
+        <p>Com mais de uma década de conteúdo, o Virtual Palato é um arquivo vivo da culinária autoral brasileira com influências do mundo todo: da cozinha israelense ao asado uruguaio, dos vinhos de Bordeaux às bodegas da Patagônia.</p>
+        <div class="sobre-links">
+          <a href="https://www.facebook.com/Virtual.Palato/" target="_blank" rel="noopener" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Seguir no Facebook
+          </a>
+          <a href="https://www.youtube.com/@virtualpalato" target="_blank" rel="noopener" class="btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            Canal no YouTube
+          </a>
+          <a href="https://www.flickr.com/photos/snedalriss" target="_blank" rel="noopener" class="btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.334 6.666a5.334 5.334 0 1 0 0 10.668 5.334 5.334 0 0 0 0-10.668zm13.332 0a5.334 5.334 0 1 0 0 10.668 5.334 5.334 0 0 0 0-10.668z"/></svg>
+            Galeria Flickr
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Virtual <span class="gold">Palato</span></div>
+        <p>Gastronomia autoral, vinhos e viagens pelo mundo com Sergio Nedal. Mais de uma década de conteúdo gastronômico.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/Virtual.Palato/" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook do Virtual Palato">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@virtualpalato" target="_blank" rel="noopener" title="YouTube" aria-label="Canal YouTube do Virtual Palato">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://www.flickr.com/photos/snedalriss" target="_blank" rel="noopener" title="Flickr" aria-label="Galeria Flickr do Sergio Nedal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5.334 6.666a5.334 5.334 0 1 0 0 10.668 5.334 5.334 0 0 0 0-10.668zm13.332 0a5.334 5.334 0 1 0 0 10.668 5.334 5.334 0 0 0 0-10.668z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Conteúdo</h4>
+        <ul>
+          <li><a href="#receitas">Receitas</a></li>
+          <li><a href="#videos">Vídeos</a></li>
+          <li><a href="#viagens">Viagens</a></li>
+          <li><a href="#vinhos">Vinhos</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Destinos</h4>
+        <ul>
+          <li><a href="#viagens">🇮🇱 Israel</a></li>
+          <li><a href="#viagens">🇺🇾 Uruguai</a></li>
+          <li><a href="#viagens">🇫🇷 Bordeaux</a></li>
+          <li><a href="#viagens">🇪🇸 Barcelona</a></li>
+          <li><a href="#viagens">🇵🇹 Portugal</a></li>
+          <li><a href="#viagens">🇺🇸 EUA</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Comunidade</h4>
+        <ul>
+          <li><a href="https://www.facebook.com/Virtual.Palato/" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@virtualpalato" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.flickr.com/photos/snedalriss" target="_blank" rel="noopener">Flickr</a></li>
+          <li><a href="privacidade.html">Privacidade</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Virtual Palato · Sergio Nedal · Todos os direitos reservados</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// Fechar menu mobile ao clicar fora
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('navMobile');
+  const toggle = document.querySelector('.nav-toggle');
+  if (nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove('open');
+  }
+});
+</script>
+
+</body>
+</html>
