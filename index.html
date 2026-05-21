@@ -66,24 +66,99 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-bg" style="background-image:url('https://live.staticflickr.com/65535/51274730690_0a1d596be2_c.jpg')"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
+<section class="hero" id="hero" style="position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between">
+
+  <!-- SLIDES DE FUNDO (thumbnails dos vídeos) -->
+  <div style="position:absolute;inset:0;z-index:0">
+    <div class="hero-slide" style="position:absolute;inset:0;opacity:1;transition:opacity 1.4s ease;background:url('https://img.youtube.com/vi/_1ypOnJO_3U/maxresdefault.jpg') center/cover no-repeat"></div>
+    <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background:url('https://img.youtube.com/vi/O0zZZUobX1o/maxresdefault.jpg') center/cover no-repeat"></div>
+    <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background:url('https://img.youtube.com/vi/BORyax6L7dA/maxresdefault.jpg') center/cover no-repeat"></div>
+    <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background:url('https://img.youtube.com/vi/ev9cMbnvs3s/maxresdefault.jpg') center/cover no-repeat"></div>
+    <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background:url('https://img.youtube.com/vi/9QhejPiBkjU/maxresdefault.jpg') center/cover no-repeat"></div>
+    <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease;background:url('https://img.youtube.com/vi/xi49iB_0EYY/maxresdefault.jpg') center/cover no-repeat"></div>
+  </div>
+
+  <!-- OVERLAY GRADIENTE -->
+  <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.25) 45%,rgba(0,0,0,0.75) 100%)"></div>
+
+  <!-- CONTEÚDO CENTRAL -->
+  <div class="hero-content" style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center">
     <p class="hero-eyebrow">GASTRONOMIA · VINHOS · VIAGENS</p>
     <h1>Virtual <span class="gold">Palato</span></h1>
     <p class="hero-sub">O universo gastronômico de Sergio Nedal — receitas autorais, harmonizações de vinho e destinos ao redor do mundo.</p>
     <div class="hero-btns">
-      <a href="#receitas" class="btn-primary">Ver Receitas</a>
-      <a href="#viagens" class="btn-outline">Roteiros de Viagem</a>
+      <a href="#videos" class="btn-primary">▶ Ver Vídeos</a>
+      <a href="#receitas" class="btn-outline">Ver Receitas</a>
     </div>
   </div>
-  <div class="hero-stats">
+
+  <!-- CARROSSEL DE THUMBNAILS -->
+  <div style="position:relative;z-index:3;padding:0 20px 16px">
+    <p style="font-size:0.65rem;letter-spacing:0.12em;color:var(--gold);font-weight:700;text-transform:uppercase;margin:0 0 8px;text-align:center">VÍDEOS DO CANAL</p>
+    <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;max-width:960px;margin:0 auto">
+
+      <a href="https://www.youtube.com/watch?v=_1ypOnJO_3U" target="_blank" rel="noopener"
+         class="hero-thumb" data-slide="0"
+         style="flex:0 0 130px;border-radius:8px;overflow:hidden;border:2px solid var(--gold);text-decoration:none;display:block;transition:transform .2s">
+        <img src="https://img.youtube.com/vi/_1ypOnJO_3U/mqdefault.jpg" alt="Bolinho de Bacalhau" style="width:100%;height:73px;object-fit:cover;display:block">
+        <div style="background:rgba(0,0,0,0.88);padding:4px 6px;font-size:0.6rem;color:#fff;line-height:1.3;height:32px;overflow:hidden">Bolinho de Bacalhau à Moda do Porto</div>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=O0zZZUobX1o" target="_blank" rel="noopener"
+         class="hero-thumb" data-slide="1"
+         style="flex:0 0 130px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,0.2);text-decoration:none;display:block;transition:transform .2s">
+        <img src="https://img.youtube.com/vi/O0zZZUobX1o/mqdefault.jpg" alt="Larica Uruguaia" style="width:100%;height:73px;object-fit:cover;display:block">
+        <div style="background:rgba(0,0,0,0.88);padding:4px 6px;font-size:0.6rem;color:#fff;line-height:1.3;height:32px;overflow:hidden">Larica à la Uruguaia — Montevideo</div>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=BORyax6L7dA" target="_blank" rel="noopener"
+         class="hero-thumb" data-slide="2"
+         style="flex:0 0 130px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,0.2);text-decoration:none;display:block;transition:transform .2s">
+        <img src="https://img.youtube.com/vi/BORyax6L7dA/mqdefault.jpg" alt="Vinho na Talha" style="width:100%;height:73px;object-fit:cover;display:block">
+        <div style="background:rgba(0,0,0,0.88);padding:4px 6px;font-size:0.6rem;color:#fff;line-height:1.3;height:32px;overflow:hidden">Eduroly em Portugal: Vinho na Talha</div>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=ev9cMbnvs3s" target="_blank" rel="noopener"
+         class="hero-thumb" data-slide="3"
+         style="flex:0 0 130px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,0.2);text-decoration:none;display:block;transition:transform .2s">
+        <img src="https://img.youtube.com/vi/ev9cMbnvs3s/mqdefault.jpg" alt="Vinícola Juan Carrau" style="width:100%;height:73px;object-fit:cover;display:block">
+        <div style="background:rgba(0,0,0,0.88);padding:4px 6px;font-size:0.6rem;color:#fff;line-height:1.3;height:32px;overflow:hidden">Vinícola Juan Carrau — Casa do Amat</div>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=9QhejPiBkjU" target="_blank" rel="noopener"
+         class="hero-thumb" data-slide="4"
+         style="flex:0 0 130px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,0.2);text-decoration:none;display:block;transition:transform .2s">
+        <img src="https://img.youtube.com/vi/9QhejPiBkjU/mqdefault.jpg" alt="Lulas Grelhadas" style="width:100%;height:73px;object-fit:cover;display:block">
+        <div style="background:rgba(0,0,0,0.88);padding:4px 6px;font-size:0.6rem;color:#fff;line-height:1.3;height:32px;overflow:hidden">Lulas Grelhadas com Arroz da Tinta</div>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=xi49iB_0EYY" target="_blank" rel="noopener"
+         class="hero-thumb" data-slide="5"
+         style="flex:0 0 130px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,0.2);text-decoration:none;display:block;transition:transform .2s">
+        <img src="https://img.youtube.com/vi/xi49iB_0EYY/mqdefault.jpg" alt="Bife Maturado" style="width:100%;height:73px;object-fit:cover;display:block">
+        <div style="background:rgba(0,0,0,0.88);padding:4px 6px;font-size:0.6rem;color:#fff;line-height:1.3;height:32px;overflow:hidden">Bife Maturado com Berinjela Marroquina</div>
+      </a>
+
+    </div>
+    <!-- DOTS -->
+    <div style="display:flex;justify-content:center;gap:7px;margin-top:10px">
+      <button class="hero-dot" style="width:8px;height:8px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;padding:0;transition:background .3s"></button>
+      <button class="hero-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;padding:0;transition:background .3s"></button>
+      <button class="hero-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;padding:0;transition:background .3s"></button>
+      <button class="hero-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;padding:0;transition:background .3s"></button>
+      <button class="hero-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;padding:0;transition:background .3s"></button>
+      <button class="hero-dot" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;padding:0;transition:background .3s"></button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="hero-stats" style="position:relative;z-index:2">
     <div class="stat"><span class="stat-n">182+</span><span class="stat-l">Receitas</span></div>
     <div class="stat"><span class="stat-n">50+</span><span class="stat-l">Vídeos</span></div>
     <div class="stat"><span class="stat-n">38+</span><span class="stat-l">Posts de Viagem</span></div>
     <div class="stat"><span class="stat-n">120+</span><span class="stat-l">Posts de Vinho</span></div>
   </div>
+
 </section>
 
 <!-- RECEITAS -->
@@ -806,16 +881,21 @@ document.addEventListener('click', (e) => {
 (function() {
   const slides = document.querySelectorAll('.hero-slide');
   const dots = document.querySelectorAll('.hero-dot');
+  const thumbs = document.querySelectorAll('.hero-thumb');
   if (!slides.length) return;
   let current = 0;
   let timer;
 
   function goTo(n) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
+    // Esconder slide atual
+    slides[current].style.opacity = '0';
+    dots[current].style.background = 'rgba(255,255,255,0.3)';
+    if (thumbs[current]) thumbs[current].style.border = '2px solid rgba(255,255,255,0.2)';
+    // Mostrar novo slide
     current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
+    slides[current].style.opacity = '1';
+    dots[current].style.background = 'var(--gold)';
+    if (thumbs[current]) thumbs[current].style.border = '2px solid var(--gold)';
   }
 
   function next() { goTo(current + 1); }
@@ -825,8 +905,14 @@ document.addEventListener('click', (e) => {
     timer = setInterval(next, 5000);
   }
 
+  // Clicar nos dots navega para o slide
   dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { goTo(i); startTimer(); });
+    dot.addEventListener('click', (e) => { e.preventDefault(); goTo(i); startTimer(); });
+  });
+
+  // Passar o mouse sobre thumbnail muda o slide de fundo (sem navegar)
+  thumbs.forEach((thumb, i) => {
+    thumb.addEventListener('mouseenter', () => { goTo(i); startTimer(); });
   });
 
   startTimer();
