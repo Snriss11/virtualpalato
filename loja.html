@@ -1272,7 +1272,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 49,90',
     precoDe: 'R$ 79,90',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Virtual Palato Cozinha do Mundo&body=Olá, tenho interesse em comprar o livro Virtual Palato: Cozinha do Mundo por R$ 49,90.'
+    link: 'MP_LINK_COZINHA_DO_MUNDO',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Virtual Palato Cozinha do Mundo&body=Olá, tenho interesse em comprar o livro Virtual Palato: Cozinha do Mundo por R$ 49,90.'
   },
   'israel': {
     tipo: '📖 Livro de Receitas',
@@ -1288,7 +1289,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 24,90',
     precoDe: 'R$ 39,90',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Sabores de Israel&body=Olá, tenho interesse em comprar o livro Sabores de Israel por R$ 24,90.'
+    link: 'MP_LINK_SABORES_ISRAEL',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Sabores de Israel&body=Olá, tenho interesse em comprar o livro Sabores de Israel por R$ 24,90.'
   },
   'uruguai': {
     tipo: '✈️ Roteiro de Viagem',
@@ -1304,7 +1306,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 19,90',
     precoDe: 'R$ 34,90',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Uruguai Gastronômico&body=Olá, tenho interesse em comprar o roteiro Uruguai Gastronômico por R$ 19,90.'
+    link: 'MP_LINK_URUGUAI',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Uruguai Gastronômico&body=Olá, tenho interesse em comprar o roteiro Uruguai Gastronômico por R$ 19,90.'
   },
   'portugal-vinhos': {
     tipo: '🍷 Guia de Vinho',
@@ -1320,7 +1323,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 29,90',
     precoDe: 'R$ 44,90',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Vinhos de Portugal&body=Olá, tenho interesse em comprar o guia Vinhos de Portugal por R$ 29,90.'
+    link: 'MP_LINK_VINHOS_PORTUGAL',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Vinhos de Portugal&body=Olá, tenho interesse em comprar o guia Vinhos de Portugal por R$ 29,90.'
   },
   'portugal-roteiro': {
     tipo: '✈️ Roteiro de Viagem',
@@ -1336,7 +1340,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 22,90',
     precoDe: 'R$ 34,90',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Lisboa e Cascais&body=Olá, tenho interesse em comprar o roteiro Lisboa e Cascais por R$ 22,90.'
+    link: 'MP_LINK_LISBOA_CASCAIS',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Lisboa e Cascais&body=Olá, tenho interesse em comprar o roteiro Lisboa e Cascais por R$ 22,90.'
   },
   'mediterraneo': {
     tipo: '📖 Livro de Receitas',
@@ -1352,7 +1357,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 24,90',
     precoDe: 'R$ 39,90',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Cozinha Mediterrânea&body=Olá, tenho interesse em comprar o livro Cozinha Mediterrânea por R$ 24,90.'
+    link: 'MP_LINK_MEDITERRANEA',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Cozinha Mediterrânea&body=Olá, tenho interesse em comprar o livro Cozinha Mediterrânea por R$ 24,90.'
   },
   'bundle': {
     tipo: '🎁 Combo Especial',
@@ -1370,7 +1376,8 @@ const PRODUTOS = {
     ],
     preco: 'R$ 99,90',
     precoDe: 'R$ 171,50',
-    link: 'mailto:virtualpalato@gmail.com?subject=Compra: Combo Virtual Palato Completo&body=Olá, tenho interesse em comprar o Combo Virtual Palato Completo por R$ 99,90.'
+    link: 'MP_LINK_COMBO',
+    linkFallback: 'mailto:virtualpalato@gmail.com?subject=Compra: Combo Virtual Palato Completo&body=Olá, tenho interesse em comprar o Combo Virtual Palato Completo por R$ 99,90.'
   }
 };
 
@@ -1388,12 +1395,12 @@ function abrirModal(id) {
         <span class="modal-preco-de">${p.precoDe}</span>
         <span class="modal-preco-valor">${p.preco}</span>
       </div>
-      <a href="${p.link}" class="btn-comprar" style="text-decoration:none">
+      <a href="${p.link.startsWith('MP_LINK') ? p.linkFallback : p.link}" class="btn-comprar" style="text-decoration:none" target="${p.link.startsWith('MP_LINK') ? '_self' : '_blank'}">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-        Comprar via E-mail
+        ${p.link.startsWith('MP_LINK') ? 'Comprar via E-mail' : 'Comprar no Mercado Pago'}
       </a>
     </div>
-    <p class="modal-aviso">Após o contato, você receberá as instruções de pagamento (PIX ou Mercado Pago) e o link de download imediato.</p>
+    <p class="modal-aviso">${p.link.startsWith('MP_LINK') ? 'Após o contato por e-mail, você receberá as instruções de pagamento (PIX ou Mercado Pago) e o link de download imediato.' : 'Pagamento seguro via Mercado Pago. Após a confirmação, você receberá o link de download imediatamente.'}</p>
   `;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
