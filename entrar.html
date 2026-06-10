@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | Virtual Palato</title>
+  <meta name="description" content="Entre ou crie sua conta no Virtual Palato">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --dark: #0d0d0d;
+      --dark-2: #1a1a1a;
+      --dark-3: #242424;
+      --text: #f0ece4;
+      --text-muted: #9a9080;
+      --border: rgba(201,168,76,0.2);
+      --error: #e05252;
+      --success: #52c07a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,13,13,0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex; align-items: center;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700;
+    }
+    .nav-logo .gold { color: var(--gold); }
+
+    /* MAIN */
+    .auth-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 1.5rem 3rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .auth-header .logo-icon {
+      width: 56px; height: 56px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.2rem;
+    }
+    .auth-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .auth-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* TABS */
+    .auth-tabs {
+      display: flex;
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 2rem;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 9px;
+      transition: all 0.2s;
+    }
+    .auth-tab.active {
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    /* CARD */
+    .auth-card {
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    /* ROLE SELECTOR */
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .role-option {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      background: var(--dark-3);
+    }
+    .role-option:hover { border-color: var(--gold); }
+    .role-option.selected {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+    .role-option .role-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .role-option .role-name {
+      font-weight: 600; font-size: 0.9rem; color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .role-option .role-desc {
+      font-size: 0.75rem; color: var(--text-muted); line-height: 1.3;
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: var(--dark-3);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+    .form-group input::placeholder { color: var(--text-muted); }
+    .form-group select option { background: var(--dark-3); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* COLLAB EXTRA FIELDS */
+    .collab-fields {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding-top: 1.2rem;
+      margin-top: 0.5rem;
+    }
+    .collab-fields.visible { display: block; }
+    .collab-note {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      font-size: 0.82rem;
+      color: var(--gold-light);
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    /* SUBMIT BUTTON */
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      border-radius: 10px;
+      padding: 0.9rem 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* DIVIDER */
+    .auth-divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.5rem 0;
+      color: var(--text-muted); font-size: 0.8rem;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    /* SOCIAL LOGIN */
+    .btn-social-login {
+      width: 100%;
+      background: var(--dark-3);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem 1.5rem;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      margin-bottom: 0.75rem;
+      text-decoration: none;
+    }
+    .btn-social-login:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+
+    /* ALERTS */
+    .alert {
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .alert.error { background: rgba(224,82,82,0.12); border: 1px solid rgba(224,82,82,0.3); color: #f08080; }
+    .alert.success { background: rgba(82,192,122,0.12); border: 1px solid rgba(82,192,122,0.3); color: #80d4a0; }
+    .alert.visible { display: block; }
+
+    /* FORGOT PASSWORD */
+    .forgot-link {
+      text-align: right;
+      margin-top: -0.8rem;
+      margin-bottom: 1rem;
+    }
+    .forgot-link a {
+      color: var(--gold);
+      font-size: 0.82rem;
+      text-decoration: none;
+    }
+    .forgot-link a:hover { text-decoration: underline; }
+
+    /* FOOTER NOTE */
+    .auth-footer-note {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .auth-footer-note a { color: var(--gold); text-decoration: none; }
+    .auth-footer-note a:hover { text-decoration: underline; }
+
+    /* LOADING SPINNER */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(13,13,13,0.3);
+      border-top-color: var(--dark);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* SUCCESS STATE */
+    .auth-success {
+      text-align: center;
+      padding: 2rem;
+      display: none;
+    }
+    .auth-success.visible { display: block; }
+    .auth-success .success-icon {
+      font-size: 3rem; margin-bottom: 1rem;
+    }
+    .auth-success h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .auth-success p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+    @media (max-width: 520px) {
+      .auth-card { padding: 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .role-selector { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="/" class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 38 38" fill="none">
+      <circle cx="19" cy="19" r="18" stroke="#C9A84C" stroke-width="1.5"/>
+      <path d="M19 7 C14.5 7 10 11.5 10 16.5 C10 22.5 14.5 26 19 28 C23.5 26 28 22.5 28 16.5 C28 11.5 23.5 7 19 7Z" fill="none" stroke="#C9A84C" stroke-width="1.3"/>
+      <path d="M11.5 16.5 Q19 21 26.5 16.5" stroke="#C9A84C" stroke-width="0.9" fill="none"/>
+      <path d="M19 28 L19 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M15 33 L23 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span>Virtual <span class="gold">Palato</span></span>
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main class="auth-page">
+  <div class="auth-container">
+
+    <div class="auth-header">
+      <div class="logo-icon">
+        <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+          <circle cx="19" cy="19" r="18" stroke="#C9A84C" stroke-width="1.5"/>
+          <path d="M19 7 C14.5 7 10 11.5 10 16.5 C10 22.5 14.5 26 19 28 C23.5 26 28 22.5 28 16.5 C28 11.5 23.5 7 19 7Z" fill="none" stroke="#C9A84C" stroke-width="1.3"/>
+          <path d="M11.5 16.5 Q19 21 26.5 16.5" stroke="#C9A84C" stroke-width="0.9" fill="none"/>
+          <path d="M19 28 L19 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M15 33 L23 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1>Bem-vindo ao Virtual Palato</h1>
+      <p>Entre ou crie sua conta para acessar conteúdo exclusivo</p>
+    </div>
+
+    <!-- TABS -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Entrar</button>
+      <button class="auth-tab" onclick="switchTab('register')">Criar Conta</button>
+    </div>
+
+    <!-- ===== LOGIN FORM ===== -->
+    <div id="loginSection" class="auth-card">
+      <div id="loginAlert" class="alert error"></div>
+
+      <!-- Google Login -->
+      <button class="btn-social-login" onclick="loginWithGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continuar com Google
+      </button>
+
+      <div class="auth-divider">ou entre com e-mail</div>
+
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="loginEmail" placeholder="seu@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div class="forgot-link">
+        <a href="#" onclick="showForgotPassword()">Esqueci minha senha</a>
+      </div>
+
+      <button class="btn-submit" id="loginBtn" onclick="handleLogin()">Entrar</button>
+
+      <div class="auth-footer-note">
+        Não tem conta? <a href="#" onclick="switchTab('register')">Criar conta grátis</a>
+      </div>
+    </div>
+
+    <!-- ===== REGISTER FORM ===== -->
+    <div id="registerSection" class="auth-card" style="display:none">
+      <div id="registerAlert" class="alert error"></div>
+      <div id="registerSuccess" class="auth-success">
+        <div class="success-icon">✉️</div>
+        <h2>Verifique seu e-mail!</h2>
+        <p>Enviamos um link de confirmação para <strong id="confirmEmail"></strong>.<br>
+        Clique no link para ativar sua conta e começar a explorar o Virtual Palato.</p>
+        <br>
+        <p style="font-size:0.8rem;color:var(--text-muted)">Não recebeu? Verifique a pasta de spam.</p>
+      </div>
+
+      <div id="registerForm">
+        <!-- TIPO DE CONTA -->
+        <div style="margin-bottom:1.5rem">
+          <label style="display:block;font-size:0.85rem;font-weight:500;color:var(--text-muted);margin-bottom:0.75rem">Tipo de conta</label>
+          <div class="role-selector">
+            <div class="role-option selected" onclick="selectRole('visitor', this)">
+              <div class="role-icon">👤</div>
+              <div class="role-name">Visitante</div>
+              <div class="role-desc">Salve favoritos, compre produtos e acompanhe conteúdo</div>
+            </div>
+            <div class="role-option" onclick="selectRole('collaborator', this)">
+              <div class="role-icon">✍️</div>
+              <div class="role-name">Colaborador</div>
+              <div class="role-desc">Publique conteúdo, faça lives e crie sua coluna exclusiva</div>
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" id="selectedRole" value="visitor">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="regFirstName" placeholder="Seu nome" autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label>Sobrenome</label>
+            <input type="text" id="regLastName" placeholder="Sobrenome" autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="regEmail" placeholder="seu@email.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+        </div>
+
+        <!-- CAMPOS EXTRAS PARA COLABORADOR -->
+        <div class="collab-fields" id="collabFields">
+          <div class="collab-note">
+            🎯 <strong>Conta de Colaborador</strong> — Após o cadastro, sua solicitação será analisada pela equipe do Virtual Palato. Você receberá um e-mail com a resposta em até 48 horas.
+          </div>
+          <div class="form-group">
+            <label>Especialidade gastronômica</label>
+            <select id="regSpecialty">
+              <option value="">Selecione sua área</option>
+              <option value="Receitas">Receitas & Culinária</option>
+              <option value="Vinhos">Vinhos & Bebidas</option>
+              <option value="Viagens">Viagens Gastronômicas</option>
+              <option value="Chefs">Entrevistas com Chefs</option>
+              <option value="Produtos">Produtos & Ingredientes</option>
+              <option value="Cultura">Cultura Alimentar</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Sobre você <span style="color:var(--text-muted);font-weight:400">(opcional)</span></label>
+            <textarea id="regBio" placeholder="Conte um pouco sobre sua experiência gastronômica..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Instagram <span style="color:var(--text-muted);font-weight:400">(opcional)</span></label>
+              <input type="text" id="regInstagram" placeholder="@seuinstagram">
+            </div>
+            <div class="form-group">
+              <label>YouTube <span style="color:var(--text-muted);font-weight:400">(opcional)</span></label>
+              <input type="text" id="regYoutube" placeholder="@seucanal">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-submit" id="registerBtn" onclick="handleRegister()">Criar Conta</button>
+
+        <div class="auth-footer-note">
+          Já tem conta? <a href="#" onclick="switchTab('login')">Entrar</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // ============================================================
+  // SUPABASE CONFIG
+  // ============================================================
+  const SUPABASE_URL = 'https://xolqaabadtliocrgqhpf.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_Fgxml2IgRneWFndQrBFBgg_BHWskrDc';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ============================================================
+  // TAB SWITCHING
+  // ============================================================
+  function switchTab(tab) {
+    const tabs = document.querySelectorAll('.auth-tab');
+    tabs[0].classList.toggle('active', tab === 'login');
+    tabs[1].classList.toggle('active', tab === 'register');
+    document.getElementById('loginSection').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('registerSection').style.display = tab === 'register' ? 'block' : 'none';
+  }
+
+  // ============================================================
+  // ROLE SELECTION
+  // ============================================================
+  function selectRole(role, el) {
+    document.querySelectorAll('.role-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('selectedRole').value = role;
+    const collabFields = document.getElementById('collabFields');
+    collabFields.classList.toggle('visible', role === 'collaborator');
+  }
+
+  // ============================================================
+  // LOGIN
+  // ============================================================
+  async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const btn = document.getElementById('loginBtn');
+    const alert = document.getElementById('loginAlert');
+
+    if (!email || !password) {
+      showAlert(alert, 'Preencha e-mail e senha.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Entrando...';
+
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      let msg = 'Erro ao entrar. Verifique suas credenciais.';
+      if (error.message.includes('Invalid login')) msg = 'E-mail ou senha incorretos.';
+      if (error.message.includes('Email not confirmed')) msg = 'Confirme seu e-mail antes de entrar.';
+      showAlert(alert, msg, 'error');
+      btn.disabled = false;
+      btn.innerHTML = 'Entrar';
+      return;
+    }
+
+    // Redirecionar baseado no role
+    const { data: profile } = await sb.from('profiles').select('role, collaborator_status').eq('id', data.user.id).single();
+    const role = profile?.role || 'visitor';
+
+    if (role === 'admin') {
+      window.location.href = '/admin/';
+    } else if (role === 'collaborator' && profile?.collaborator_status === 'approved') {
+      window.location.href = '/colaborador/';
+    } else {
+      window.location.href = '/minha-conta.html';
+    }
+  }
+
+  // ============================================================
+  // GOOGLE LOGIN
+  // ============================================================
+  async function loginWithGoogle() {
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin + '/minha-conta.html' }
+    });
+    if (error) alert('Erro ao entrar com Google: ' + error.message);
+  }
+
+  // ============================================================
+  // REGISTER
+  // ============================================================
+  async function handleRegister() {
+    const firstName = document.getElementById('regFirstName').value.trim();
+    const lastName = document.getElementById('regLastName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const role = document.getElementById('selectedRole').value;
+    const specialty = document.getElementById('regSpecialty')?.value || '';
+    const bio = document.getElementById('regBio')?.value || '';
+    const instagram = document.getElementById('regInstagram')?.value || '';
+    const youtube = document.getElementById('regYoutube')?.value || '';
+
+    const btn = document.getElementById('registerBtn');
+    const alertEl = document.getElementById('registerAlert');
+
+    if (!firstName || !email || !password) {
+      showAlert(alertEl, 'Preencha nome, e-mail e senha.', 'error');
+      return;
+    }
+    if (password.length < 8) {
+      showAlert(alertEl, 'A senha deve ter pelo menos 8 caracteres.', 'error');
+      return;
+    }
+    if (role === 'collaborator' && !specialty) {
+      showAlert(alertEl, 'Selecione sua especialidade gastronômica.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Criando conta...';
+
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          role: role,
+          collaborator_status: role === 'collaborator' ? 'pending' : null,
+          collaborator_specialty: specialty,
+          bio: bio,
+          social_instagram: instagram,
+          social_youtube: youtube
+        }
+      }
+    });
+
+    if (error) {
+      let msg = 'Erro ao criar conta.';
+      if (error.message.includes('already registered')) msg = 'Este e-mail já está cadastrado.';
+      if (error.message.includes('Password')) msg = 'Senha muito fraca. Use pelo menos 8 caracteres.';
+      showAlert(alertEl, msg, 'error');
+      btn.disabled = false;
+      btn.innerHTML = 'Criar Conta';
+      return;
+    }
+
+    // Atualizar perfil com campos extras do colaborador
+    if (data.user && role === 'collaborator') {
+      await sb.from('profiles').update({
+        collaborator_specialty: specialty,
+        bio: bio,
+        social_instagram: instagram,
+        social_youtube: youtube,
+        collaborator_status: 'pending'
+      }).eq('id', data.user.id);
+    }
+
+    // Mostrar sucesso
+    document.getElementById('confirmEmail').textContent = email;
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('registerSuccess').classList.add('visible');
+  }
+
+  // ============================================================
+  // FORGOT PASSWORD
+  // ============================================================
+  async function showForgotPassword() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const alertEl = document.getElementById('loginAlert');
+
+    if (!email) {
+      showAlert(alertEl, 'Digite seu e-mail no campo acima para recuperar a senha.', 'error');
+      return;
+    }
+
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/redefinir-senha.html'
+    });
+
+    if (error) {
+      showAlert(alertEl, 'Erro ao enviar e-mail de recuperação.', 'error');
+    } else {
+      showAlert(alertEl, `✅ E-mail de recuperação enviado para ${email}. Verifique sua caixa de entrada.`, 'success');
+    }
+  }
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function showAlert(el, msg, type) {
+    el.textContent = msg;
+    el.className = `alert ${type} visible`;
+    setTimeout(() => el.classList.remove('visible'), 6000);
+  }
+
+  // Verificar se já está logado
+  sb.auth.getSession().then(({ data: { session } }) => {
+    if (session) {
+      sb.from('profiles').select('role, collaborator_status').eq('id', session.user.id).single().then(({ data: profile }) => {
+        const role = profile?.role || 'visitor';
+        if (role === 'admin') window.location.href = '/admin/';
+        else if (role === 'collaborator' && profile?.collaborator_status === 'approved') window.location.href = '/colaborador/';
+        else window.location.href = '/minha-conta.html';
+      });
+    }
+  });
+
+  // Enter key support
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('loginSection').style.display !== 'none') handleLogin();
+      else handleRegister();
+    }
+  });
+</script>
+</body>
+</html>
