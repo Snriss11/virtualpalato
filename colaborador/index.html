@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Colaborador | Virtual Palato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --gold: #C9A84C; --gold-light: #E8C97A;
+      --dark: #0d0d0d; --dark-2: #1a1a1a; --dark-3: #242424; --dark-4: #2e2e2e;
+      --text: #f0ece4; --text-muted: #9a9080;
+      --border: rgba(201,168,76,0.2);
+      --success: #52c07a; --error: #e05252; --warning: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--dark); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px; min-height: 100vh; background: var(--dark-2);
+      border-right: 1px solid var(--border); padding: 1.5rem 0;
+      position: fixed; top: 0; left: 0; z-index: 50;
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo { padding: 0 1.5rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .sidebar-logo a { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; }
+    .sidebar-logo .gold { color: var(--gold); }
+    .sidebar-user { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .sidebar-user .user-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .sidebar-user .user-role { font-size: 0.75rem; color: var(--gold); }
+    .sidebar-nav { flex: 1; padding: 1rem 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.7rem 1.5rem; color: var(--text-muted);
+      cursor: pointer; transition: all 0.2s; font-size: 0.88rem;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: var(--text); background: rgba(201,168,76,0.05); }
+    .nav-item.active { color: var(--gold); background: rgba(201,168,76,0.08); border-left-color: var(--gold); }
+    .nav-item .icon { font-size: 1.1rem; width: 20px; text-align: center; }
+    .sidebar-bottom { padding: 1rem 1.5rem; border-top: 1px solid var(--border); }
+    .btn-logout-side { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s; }
+    .btn-logout-side:hover { border-color: var(--error); color: var(--error); }
+
+    /* MAIN CONTENT */
+    .main-content { margin-left: 240px; flex: 1; padding: 2rem; min-height: 100vh; }
+    .page-header { margin-bottom: 2rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 0.3rem; }
+    .page-header p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* CARDS */
+    .card { background: var(--dark-2); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+    .card-header h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--dark-2); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; text-align: center; }
+    .stat-card .stat-number { font-size: 1.8rem; font-weight: 700; color: var(--gold); font-family: 'Playfair Display', serif; }
+    .stat-card .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem; }
+
+    /* FORM */
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: var(--dark-3); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 0.75rem 1rem; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--dark-3); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* BUTTONS */
+    .btn-primary { background: var(--gold); color: var(--dark); border: none; border-radius: 10px; padding: 0.75rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-secondary { background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 10px; padding: 0.7rem 1.2rem; font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-danger { background: transparent; color: var(--error); border: 1px solid rgba(224,82,82,0.3); border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+    .btn-danger:hover { background: rgba(224,82,82,0.1); }
+
+    /* FILE UPLOAD */
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 12px; padding: 2rem;
+      text-align: center; cursor: pointer; transition: all 0.2s;
+      background: var(--dark-3);
+    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .upload-zone p { color: var(--text-muted); font-size: 0.88rem; }
+    .upload-zone strong { color: var(--gold); }
+    .upload-zone input[type="file"] { display: none; }
+    .upload-preview { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .upload-preview-item { position: relative; width: 100px; height: 100px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    .upload-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-preview-item .remove-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); border: none; color: #fff; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
+    .upload-progress { margin-top: 0.75rem; }
+    .progress-bar { height: 4px; background: var(--dark-4); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--gold); transition: width 0.3s; width: 0%; }
+
+    /* POSTS LIST */
+    .posts-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .post-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background: var(--dark-3); border-radius: 10px; border: 1px solid var(--border); }
+    .post-thumb { width: 60px; height: 45px; border-radius: 6px; object-fit: cover; background: var(--dark-4); flex-shrink: 0; }
+    .post-info { flex: 1; }
+    .post-info .title { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.2rem; }
+    .post-info .meta { font-size: 0.75rem; color: var(--text-muted); }
+    .post-status { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+    .status-draft { background: rgba(155,161,166,0.15); color: #9ba1a6; }
+    .status-pending { background: rgba(251,191,36,0.15); color: var(--warning); }
+    .status-published { background: rgba(82,192,122,0.15); color: var(--success); }
+    .status-rejected { background: rgba(224,82,82,0.15); color: var(--error); }
+
+    /* CAMERA / LIVE */
+    .camera-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
+    #cameraPreview { width: 100%; height: 100%; object-fit: cover; }
+    .camera-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn-camera { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.2rem; border-radius: 10px; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-camera.start { background: var(--success); color: #fff; }
+    .btn-camera.stop { background: var(--error); color: #fff; }
+    .btn-camera.capture { background: var(--gold); color: var(--dark); }
+    .btn-camera.record { background: var(--error); color: #fff; }
+    .btn-camera:disabled { opacity: 0.5; cursor: not-allowed; }
+    .live-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--error); color: #fff; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+    .live-dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .camera-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); gap: 1rem; }
+    .camera-placeholder .icon { font-size: 3rem; }
+
+    /* COLUMNS */
+    .columns-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .column-card { background: var(--dark-3); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+    .column-card:hover { border-color: var(--gold); }
+    .column-cover { width: 100%; height: 120px; object-fit: cover; background: var(--dark-4); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .column-info { padding: 1rem; }
+    .column-info .col-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .column-info .col-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 0.75rem; }
+    .column-actions { display: flex; gap: 0.5rem; }
+
+    /* ALERT */
+    .alert { padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.88rem; margin-bottom: 1rem; display: none; }
+    .alert.visible { display: block; }
+    .alert.success { background: rgba(82,192,122,0.12); border: 1px solid rgba(82,192,122,0.3); color: #80d4a0; }
+    .alert.error { background: rgba(224,82,82,0.12); border: 1px solid rgba(224,82,82,0.3); color: #f08080; }
+    .alert.info { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
+
+    /* RICH TEXT EDITOR */
+    .editor-toolbar { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.5rem; background: var(--dark-4); border: 1.5px solid var(--border); border-bottom: none; border-radius: 10px 10px 0 0; }
+    .editor-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.3rem 0.5rem; border-radius: 5px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .editor-btn:hover { background: rgba(201,168,76,0.1); color: var(--gold); }
+    .editor-content { min-height: 200px; background: var(--dark-3); border: 1.5px solid var(--border); border-radius: 0 0 10px 10px; padding: 1rem; color: var(--text); font-size: 0.95rem; line-height: 1.7; outline: none; }
+    .editor-content:focus { border-color: var(--gold); }
+
+    /* TABS */
+    .panel-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .panel-tab { padding: 0.65rem 1.2rem; background: transparent; border: none; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; }
+    .panel-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+    /* SPINNER */
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(13,13,13,0.3); border-top-color: var(--dark); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* MOBILE */
+    .mobile-menu-btn { display: none; position: fixed; top: 1rem; left: 1rem; z-index: 100; background: var(--dark-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; cursor: pointer; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0; padding: 1rem; padding-top: 4rem; }
+      .mobile-menu-btn { display: flex; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE MENU BTN -->
+<button class="mobile-menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</button>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="/">
+      <svg width="28" height="28" viewBox="0 0 38 38" fill="none">
+        <circle cx="19" cy="19" r="18" stroke="#C9A84C" stroke-width="1.5"/>
+        <path d="M19 7 C14.5 7 10 11.5 10 16.5 C10 22.5 14.5 26 19 28 C23.5 26 28 22.5 28 16.5 C28 11.5 23.5 7 19 7Z" fill="none" stroke="#C9A84C" stroke-width="1.3"/>
+        <path d="M11.5 16.5 Q19 21 26.5 16.5" stroke="#C9A84C" stroke-width="0.9" fill="none"/>
+        <path d="M19 28 L19 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M15 33 L23 33" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Virtual <span class="gold">Palato</span>
+    </a>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-name" id="sidebarName">Colaborador</div>
+    <div class="user-role">✍️ Colaborador</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="showPanel('dashboard')"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showPanel('novo-post')"><span class="icon">✏️</span> Novo Post</div>
+    <div class="nav-item" onclick="showPanel('meus-posts')"><span class="icon">📝</span> Meus Posts</div>
+    <div class="nav-item" onclick="showPanel('colunas')"><span class="icon">📰</span> Minhas Colunas</div>
+    <div class="nav-item" onclick="showPanel('midia')"><span class="icon">🖼️</span> Biblioteca de Mídia</div>
+    <div class="nav-item" onclick="showPanel('camera')"><span class="icon">📷</span> Câmera & Foto</div>
+    <div class="nav-item" onclick="showPanel('live')"><span class="icon">🔴</span> Live</div>
+    <div class="nav-item" onclick="showPanel('perfil')"><span class="icon">👤</span> Meu Perfil</div>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="btn-logout-side" onclick="handleLogout()">Sair da conta</button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="panel active" id="panel-dashboard">
+    <div class="page-header">
+      <h1>Olá, <span id="dashName">Colaborador</span>! 👋</h1>
+      <p>Bem-vindo ao seu painel de criação de conteúdo</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-number" id="statPosts">0</div><div class="stat-label">Posts publicados</div></div>
+      <div class="stat-card"><div class="stat-number" id="statDrafts">0</div><div class="stat-label">Rascunhos</div></div>
+      <div class="stat-card"><div class="stat-number" id="statColumns">0</div><div class="stat-label">Colunas ativas</div></div>
+      <div class="stat-card"><div class="stat-number" id="statViews">0</div><div class="stat-label">Visualizações</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3>Ações Rápidas</h3></div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <button class="btn-primary" onclick="showPanel('novo-post')">✏️ Escrever Post</button>
+        <button class="btn-secondary" onclick="showPanel('colunas')">📰 Criar Coluna</button>
+        <button class="btn-secondary" onclick="showPanel('camera')">📷 Tirar Foto</button>
+        <button class="btn-secondary" onclick="showPanel('live')">🔴 Iniciar Live</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3>Posts Recentes</h3></div>
+      <div id="recentPosts"><div style="color:var(--text-muted);font-size:0.88rem">Carregando...</div></div>
+    </div>
+  </div>
+
+  <!-- ===== NOVO POST ===== -->
+  <div class="panel" id="panel-novo-post">
+    <div class="page-header">
+      <h1>Novo Post</h1>
+      <p>Escreva e publique seu conteúdo gastronômico</p>
+    </div>
+    <div id="postAlert" class="alert"></div>
+    <div class="card">
+      <div class="form-group">
+        <label>Título do post *</label>
+        <input type="text" id="postTitle" placeholder="Ex: Minha receita de Bacalhau à Brás" oninput="generateSlug()">
+      </div>
+      <div class="form-group">
+        <label>Slug (URL)</label>
+        <input type="text" id="postSlug" placeholder="minha-receita-de-bacalhau-a-bras">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoria *</label>
+          <select id="postCategory">
+            <option value="">Selecione</option>
+            <option value="Receitas">Receitas</option>
+            <option value="Vinhos">Vinhos & Bebidas</option>
+            <option value="Viagens">Viagens Gastronômicas</option>
+            <option value="Chefs">Entrevistas com Chefs</option>
+            <option value="Produtos">Produtos & Ingredientes</option>
+            <option value="Cultura">Cultura Alimentar</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Coluna (opcional)</label>
+          <select id="postColumn">
+            <option value="">Nenhuma</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Resumo</label>
+        <input type="text" id="postExcerpt" placeholder="Uma frase descrevendo o post (aparece nos cards)">
+      </div>
+      <div class="form-group">
+        <label>Tags (separadas por vírgula)</label>
+        <input type="text" id="postTags" placeholder="receita, bacalhau, portugal">
+      </div>
+      <div class="form-group">
+        <label>Imagem de capa</label>
+        <div class="upload-zone" id="coverUploadZone" onclick="document.getElementById('coverFileInput').click()">
+          <input type="file" id="coverFileInput" accept="image/*" onchange="handleCoverUpload(this)">
+          <div class="upload-icon">🖼️</div>
+          <p><strong>Clique para selecionar</strong> ou arraste uma imagem</p>
+          <p style="font-size:0.78rem;margin-top:0.3rem">JPG, PNG, WebP — máx. 5MB</p>
+        </div>
+        <div id="coverPreview" style="margin-top:0.75rem;display:none">
+          <img id="coverPreviewImg" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
+        </div>
+        <div class="upload-progress" id="coverProgress" style="display:none">
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.3rem">Enviando imagem...</div>
+          <div class="progress-bar"><div class="progress-fill" id="coverProgressFill"></div></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Conteúdo *</label>
+        <div class="editor-toolbar">
+          <button class="editor-btn" onclick="execCmd('bold')" title="Negrito"><b>B</b></button>
+          <button class="editor-btn" onclick="execCmd('italic')" title="Itálico"><i>I</i></button>
+          <button class="editor-btn" onclick="execCmd('underline')" title="Sublinhado"><u>U</u></button>
+          <button class="editor-btn" onclick="execCmd('insertUnorderedList')" title="Lista">• Lista</button>
+          <button class="editor-btn" onclick="execCmd('insertOrderedList')" title="Lista numerada">1. Lista</button>
+          <button class="editor-btn" onclick="insertHeading()" title="Título">H2</button>
+          <button class="editor-btn" onclick="insertLink()" title="Link">🔗</button>
+          <button class="editor-btn" onclick="insertImage()" title="Imagem">🖼️</button>
+        </div>
+        <div class="editor-content" id="postContent" contenteditable="true" placeholder="Escreva seu post aqui..."></div>
+      </div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <button class="btn-primary" onclick="savePost('published')">🚀 Enviar para Revisão</button>
+        <button class="btn-secondary" onclick="savePost('draft')">💾 Salvar Rascunho</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MEUS POSTS ===== -->
+  <div class="panel" id="panel-meus-posts">
+    <div class="page-header">
+      <h1>Meus Posts</h1>
+      <p>Gerencie seus artigos e receitas</p>
+    </div>
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="filterPosts('all', this)">Todos</button>
+      <button class="panel-tab" onclick="filterPosts('published', this)">Publicados</button>
+      <button class="panel-tab" onclick="filterPosts('pending_review', this)">Em Revisão</button>
+      <button class="panel-tab" onclick="filterPosts('draft', this)">Rascunhos</button>
+    </div>
+    <div id="postsList"><div style="color:var(--text-muted);font-size:0.88rem">Carregando...</div></div>
+  </div>
+
+  <!-- ===== COLUNAS ===== -->
+  <div class="panel" id="panel-colunas">
+    <div class="page-header">
+      <h1>Minhas Colunas</h1>
+      <p>Crie e gerencie suas colunas exclusivas no Virtual Palato</p>
+    </div>
+    <div id="colAlert" class="alert"></div>
+    <div class="card">
+      <div class="card-header"><h3>Nova Coluna</h3></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome da coluna *</label>
+          <input type="text" id="colTitle" placeholder="Ex: Vinhos do Mundo" oninput="generateColSlug()">
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select id="colCategory">
+            <option value="Receitas">Receitas</option>
+            <option value="Vinhos">Vinhos</option>
+            <option value="Viagens">Viagens</option>
+            <option value="Cultura">Cultura</option>
+            <option value="Geral">Geral</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea id="colDescription" placeholder="Descreva sua coluna em 2-3 frases..." rows="3"></textarea>
+      </div>
+      <button class="btn-primary" onclick="createColumn()">Criar Coluna</button>
+    </div>
+    <div class="columns-grid" id="columnsList">
+      <div style="color:var(--text-muted);font-size:0.88rem">Carregando...</div>
+    </div>
+  </div>
+
+  <!-- ===== BIBLIOTECA DE MÍDIA ===== -->
+  <div class="panel" id="panel-midia">
+    <div class="page-header">
+      <h1>Biblioteca de Mídia</h1>
+      <p>Faça upload e gerencie suas imagens e arquivos</p>
+    </div>
+    <div id="mediaAlert" class="alert"></div>
+    <div class="card">
+      <div class="card-header"><h3>Upload de Arquivos</h3></div>
+      <div class="upload-zone" id="mediaUploadZone"
+           ondragover="event.preventDefault();this.classList.add('dragover')"
+           ondragleave="this.classList.remove('dragover')"
+           ondrop="handleMediaDrop(event)"
+           onclick="document.getElementById('mediaFileInput').click()">
+        <input type="file" id="mediaFileInput" accept="image/*,video/*,.pdf" multiple onchange="handleMediaUpload(this.files)">
+        <div class="upload-icon">📁</div>
+        <p><strong>Clique para selecionar</strong> ou arraste arquivos aqui</p>
+        <p style="font-size:0.78rem;margin-top:0.3rem">Imagens, vídeos, PDFs — máx. 50MB por arquivo</p>
+      </div>
+      <div class="upload-progress" id="mediaProgress" style="display:none">
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.3rem" id="mediaProgressText">Enviando...</div>
+        <div class="progress-bar"><div class="progress-fill" id="mediaProgressFill"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3>Arquivos Enviados</h3></div>
+      <div id="mediaGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.75rem">
+        <div style="color:var(--text-muted);font-size:0.88rem">Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CÂMERA ===== -->
+  <div class="panel" id="panel-camera">
+    <div class="page-header">
+      <h1>Câmera & Foto</h1>
+      <p>Tire fotos diretamente pelo site e use nos seus posts</p>
+    </div>
+    <div class="card">
+      <div class="camera-container">
+        <video id="cameraPreview" autoplay playsinline muted></video>
+        <div id="cameraPlaceholder" class="camera-placeholder">
+          <div class="icon">📷</div>
+          <p style="color:var(--text-muted)">Clique em "Ativar Câmera" para começar</p>
+        </div>
+      </div>
+      <div class="camera-controls">
+        <button class="btn-camera start" id="btnStartCamera" onclick="startCamera()">📷 Ativar Câmera</button>
+        <button class="btn-camera capture" id="btnCapture" onclick="capturePhoto()" disabled>📸 Tirar Foto</button>
+        <button class="btn-camera stop" id="btnStopCamera" onclick="stopCamera()" disabled>⏹ Parar</button>
+        <select id="cameraSelect" style="background:var(--dark-3);border:1px solid var(--border);color:var(--text);padding:0.5rem;border-radius:8px;font-size:0.85rem">
+          <option value="">Câmera padrão</option>
+        </select>
+      </div>
+      <canvas id="photoCanvas" style="display:none"></canvas>
+    </div>
+    <div class="card" id="photosCard">
+      <div class="card-header"><h3>Fotos Tiradas</h3></div>
+      <div id="photoGallery" class="upload-preview">
+        <div style="color:var(--text-muted);font-size:0.88rem">Nenhuma foto ainda</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LIVE ===== -->
+  <div class="panel" id="panel-live">
+    <div class="page-header">
+      <h1>Live</h1>
+      <p>Transmita ao vivo para a audiência do Virtual Palato</p>
+    </div>
+    <div id="liveAlert" class="alert info visible">
+      ℹ️ As lives ficam visíveis para todos os visitantes do site em tempo real. Avise sua audiência antes de começar!
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Configurar Transmissão</h3>
+        <span id="liveBadge" style="display:none" class="live-badge"><span class="live-dot"></span> AO VIVO</span>
+      </div>
+      <div id="liveSetup">
+        <div class="form-group">
+          <label>Título da live *</label>
+          <input type="text" id="liveTitle" placeholder="Ex: Harmonização de Vinhos ao Vivo">
+        </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <textarea id="liveDescription" placeholder="O que você vai mostrar na live?" rows="3"></textarea>
+        </div>
+        <button class="btn-primary" onclick="startLive()">🔴 Iniciar Live</button>
+      </div>
+      <div id="liveStream" style="display:none">
+        <div class="camera-container" style="margin-bottom:1rem">
+          <video id="livePreview" autoplay playsinline muted></video>
+        </div>
+        <div class="camera-controls">
+          <button class="btn-camera stop" onclick="stopLive()">⏹ Encerrar Live</button>
+          <span id="liveTimer" style="color:var(--text-muted);font-size:0.88rem">00:00</span>
+          <span id="liveViewers" style="color:var(--text-muted);font-size:0.88rem">👁 0 assistindo</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3>Lives Anteriores</h3></div>
+      <div id="liveHistory"><div style="color:var(--text-muted);font-size:0.88rem">Nenhuma live realizada ainda</div></div>
+    </div>
+  </div>
+
+  <!-- ===== PERFIL ===== -->
+  <div class="panel" id="panel-perfil">
+    <div class="page-header">
+      <h1>Meu Perfil</h1>
+      <p>Informações públicas do seu perfil de colaborador</p>
+    </div>
+    <div id="profileAlert" class="alert"></div>
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="profName" placeholder="Seu nome">
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="profUsername" placeholder="@seuusername">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Especialidade</label>
+        <select id="profSpecialty">
+          <option value="Receitas">Receitas & Culinária</option>
+          <option value="Vinhos">Vinhos & Bebidas</option>
+          <option value="Viagens">Viagens Gastronômicas</option>
+          <option value="Chefs">Entrevistas com Chefs</option>
+          <option value="Produtos">Produtos & Ingredientes</option>
+          <option value="Cultura">Cultura Alimentar</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Bio (aparece no seu perfil público)</label>
+        <textarea id="profBio" rows="4" placeholder="Conte sobre sua experiência gastronômica..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Instagram</label>
+          <input type="text" id="profInstagram" placeholder="@seuinstagram">
+        </div>
+        <div class="form-group">
+          <label>YouTube</label>
+          <input type="text" id="profYoutube" placeholder="@seucanal">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="saveProfile()">Salvar Perfil</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const SUPABASE_URL = 'https://xolqaabadtliocrgqhpf.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_Fgxml2IgRneWFndQrBFBgg_BHWskrDc';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let currentUser = null;
+  let currentProfile = null;
+  let cameraStream = null;
+  let liveStream = null;
+  let liveTimer = null;
+  let liveSeconds = 0;
+  let coverImageUrl = '';
+  let allPosts = [];
+  let allColumns = [];
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  async function init() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { window.location.href = '/entrar.html'; return; }
+    currentUser = session.user;
+
+    const { data: profile } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    if (!profile || profile.role !== 'collaborator' || profile.collaborator_status !== 'approved') {
+      window.location.href = '/minha-conta.html';
+      return;
+    }
+    currentProfile = profile;
+
+    const name = profile.full_name?.split(' ')[0] || 'Colaborador';
+    document.getElementById('sidebarName').textContent = profile.full_name || 'Colaborador';
+    document.getElementById('dashName').textContent = name;
+
+    // Preencher perfil
+    document.getElementById('profName').value = profile.full_name || '';
+    document.getElementById('profUsername').value = profile.username || '';
+    document.getElementById('profSpecialty').value = profile.collaborator_specialty || 'Receitas';
+    document.getElementById('profBio').value = profile.bio || '';
+    document.getElementById('profInstagram').value = profile.social_instagram || '';
+    document.getElementById('profYoutube').value = profile.social_youtube || '';
+
+    loadDashboardStats();
+    loadPosts();
+    loadColumns();
+    loadMedia();
+    loadLiveHistory();
+    listCameras();
+  }
+
+  // ============================================================
+  // NAVIGATION
+  // ============================================================
+  function showPanel(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById(`panel-${name}`).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.textContent.toLowerCase().includes(name.replace('-', ' '))) n.classList.add('active');
+    });
+    document.querySelector('.sidebar')?.classList.remove('open');
+  }
+
+  // ============================================================
+  // DASHBOARD STATS
+  // ============================================================
+  async function loadDashboardStats() {
+    const { data: posts } = await sb.from('collab_posts').select('status, views').eq('collaborator_id', currentUser.id);
+    const { data: cols } = await sb.from('columns').select('id').eq('collaborator_id', currentUser.id);
+    const published = posts?.filter(p => p.status === 'published').length || 0;
+    const drafts = posts?.filter(p => p.status === 'draft').length || 0;
+    const views = posts?.reduce((sum, p) => sum + (p.views || 0), 0) || 0;
+    document.getElementById('statPosts').textContent = published;
+    document.getElementById('statDrafts').textContent = drafts;
+    document.getElementById('statColumns').textContent = cols?.length || 0;
+    document.getElementById('statViews').textContent = views;
+
+    // Recent posts
+    const recent = posts?.slice(0, 5) || [];
+    const { data: recentFull } = await sb.from('collab_posts').select('*').eq('collaborator_id', currentUser.id).order('created_at', { ascending: false }).limit(5);
+    const el = document.getElementById('recentPosts');
+    if (!recentFull?.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📝</div><p>Nenhum post ainda. <a href="#" onclick="showPanel(\'novo-post\')">Escreva seu primeiro post!</a></p></div>'; return; }
+    el.innerHTML = '<div class="posts-list">' + recentFull.map(p => `
+      <div class="post-item">
+        <div class="post-info">
+          <div class="title">${p.title}</div>
+          <div class="meta">${p.category} · ${new Date(p.created_at).toLocaleDateString('pt-BR')}</div>
+        </div>
+        <span class="post-status status-${p.status}">${statusLabel(p.status)}</span>
+      </div>
+    `).join('') + '</div>';
+  }
+
+  // ============================================================
+  // POSTS
+  // ============================================================
+  async function loadPosts(filter = 'all') {
+    let query = sb.from('collab_posts').select('*').eq('collaborator_id', currentUser.id).order('created_at', { ascending: false });
+    if (filter !== 'all') query = query.eq('status', filter);
+    const { data: posts } = await query;
+    allPosts = posts || [];
+    renderPosts(allPosts);
+
+    // Load columns for post form
+    const { data: cols } = await sb.from('columns').select('id, title').eq('collaborator_id', currentUser.id);
+    const sel = document.getElementById('postColumn');
+    sel.innerHTML = '<option value="">Nenhuma</option>';
+    cols?.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.title; sel.appendChild(o); });
+  }
+
+  function renderPosts(posts) {
+    const el = document.getElementById('postsList');
+    if (!posts.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📝</div><p>Nenhum post encontrado.</p></div>'; return; }
+    el.innerHTML = '<div class="posts-list">' + posts.map(p => `
+      <div class="post-item">
+        ${p.cover_image_url ? `<img class="post-thumb" src="${p.cover_image_url}" alt="${p.title}">` : '<div class="post-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem">🍽️</div>'}
+        <div class="post-info">
+          <div class="title">${p.title}</div>
+          <div class="meta">${p.category} · ${new Date(p.created_at).toLocaleDateString('pt-BR')} · ${p.views || 0} views</div>
+        </div>
+        <span class="post-status status-${p.status}">${statusLabel(p.status)}</span>
+        <button class="btn-danger" onclick="deletePost(${p.id})">Excluir</button>
+      </div>
+    `).join('') + '</div>';
+  }
+
+  function filterPosts(filter, btn) {
+    document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    if (filter === 'all') renderPosts(allPosts);
+    else renderPosts(allPosts.filter(p => p.status === filter));
+  }
+
+  async function deletePost(id) {
+    if (!confirm('Excluir este post?')) return;
+    await sb.from('collab_posts').delete().eq('id', id).eq('collaborator_id', currentUser.id);
+    loadPosts();
+  }
+
+  function statusLabel(s) {
+    const map = { draft: 'Rascunho', pending_review: 'Em Revisão', published: 'Publicado', rejected: 'Rejeitado' };
+    return map[s] || s;
+  }
+
+  // ============================================================
+  // SAVE POST
+  // ============================================================
+  async function savePost(status) {
+    const title = document.getElementById('postTitle').value.trim();
+    const slug = document.getElementById('postSlug').value.trim();
+    const category = document.getElementById('postCategory').value;
+    const content = document.getElementById('postContent').innerHTML;
+    const excerpt = document.getElementById('postExcerpt').value.trim();
+    const tags = document.getElementById('postTags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const columnId = document.getElementById('postColumn').value || null;
+    const alertEl = document.getElementById('postAlert');
+
+    if (!title || !category || !content || content === '') {
+      showAlert(alertEl, 'Preencha título, categoria e conteúdo.', 'error');
+      return;
+    }
+
+    const finalSlug = slug || slugify(title);
+
+    const { error } = await sb.from('collab_posts').insert({
+      collaborator_id: currentUser.id,
+      column_id: columnId ? parseInt(columnId) : null,
+      title, slug: finalSlug, content, excerpt, category, tags,
+      cover_image_url: coverImageUrl || null,
+      status,
+      published_at: status === 'pending_review' ? new Date().toISOString() : null
+    });
+
+    if (error) {
+      showAlert(alertEl, 'Erro ao salvar: ' + error.message, 'error');
+    } else {
+      showAlert(alertEl, status === 'draft' ? '✅ Rascunho salvo!' : '🚀 Post enviado para revisão! A equipe do Virtual Palato vai analisar em breve.', 'success');
+      document.getElementById('postTitle').value = '';
+      document.getElementById('postSlug').value = '';
+      document.getElementById('postContent').innerHTML = '';
+      document.getElementById('postExcerpt').value = '';
+      document.getElementById('postTags').value = '';
+      coverImageUrl = '';
+      document.getElementById('coverPreview').style.display = 'none';
+      loadPosts();
+    }
+  }
+
+  function generateSlug() {
+    const title = document.getElementById('postTitle').value;
+    document.getElementById('postSlug').value = slugify(title);
+  }
+
+  function slugify(text) {
+    return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  // ============================================================
+  // COVER UPLOAD
+  // ============================================================
+  async function handleCoverUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const progressEl = document.getElementById('coverProgress');
+    const fillEl = document.getElementById('coverProgressFill');
+    progressEl.style.display = 'block';
+    fillEl.style.width = '30%';
+
+    const ext = file.name.split('.').pop();
+    const path = `covers/${currentUser.id}/${Date.now()}.${ext}`;
+    const { data, error } = await sb.storage.from('collab-media').upload(path, file, { upsert: true });
+
+    fillEl.style.width = '100%';
+    setTimeout(() => { progressEl.style.display = 'none'; fillEl.style.width = '0%'; }, 800);
+
+    if (error) { alert('Erro no upload: ' + error.message); return; }
+
+    const { data: urlData } = sb.storage.from('collab-media').getPublicUrl(path);
+    coverImageUrl = urlData.publicUrl;
+    document.getElementById('coverPreviewImg').src = coverImageUrl;
+    document.getElementById('coverPreview').style.display = 'block';
+  }
+
+  // ============================================================
+  // MEDIA LIBRARY
+  // ============================================================
+  async function handleMediaUpload(files) {
+    const progressEl = document.getElementById('mediaProgress');
+    const fillEl = document.getElementById('mediaProgressFill');
+    const textEl = document.getElementById('mediaProgressText');
+    progressEl.style.display = 'block';
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      textEl.textContent = `Enviando ${i + 1}/${files.length}: ${file.name}`;
+      fillEl.style.width = `${((i + 1) / files.length) * 100}%`;
+      const ext = file.name.split('.').pop();
+      const path = `media/${currentUser.id}/${Date.now()}_${i}.${ext}`;
+      await sb.storage.from('collab-media').upload(path, file, { upsert: true });
+    }
+
+    setTimeout(() => { progressEl.style.display = 'none'; fillEl.style.width = '0%'; }, 800);
+    loadMedia();
+  }
+
+  function handleMediaDrop(e) {
+    e.preventDefault();
+    document.getElementById('mediaUploadZone').classList.remove('dragover');
+    handleMediaUpload(e.dataTransfer.files);
+  }
+
+  async function loadMedia() {
+    const { data: files } = await sb.storage.from('collab-media').list(`media/${currentUser.id}`, { limit: 50 });
+    const el = document.getElementById('mediaGrid');
+    if (!files?.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:0.88rem">Nenhum arquivo enviado ainda</div>'; return; }
+    el.innerHTML = files.map(f => {
+      const { data: urlData } = sb.storage.from('collab-media').getPublicUrl(`media/${currentUser.id}/${f.name}`);
+      const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(f.name);
+      return `<div style="border-radius:8px;overflow:hidden;border:1px solid var(--border);cursor:pointer" onclick="copyMediaUrl('${urlData.publicUrl}')">
+        ${isImage ? `<img src="${urlData.publicUrl}" style="width:100%;height:80px;object-fit:cover">` : `<div style="height:80px;display:flex;align-items:center;justify-content:center;background:var(--dark-3);font-size:1.5rem">📄</div>`}
+        <div style="padding:4px 6px;font-size:0.7rem;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${f.name}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function copyMediaUrl(url) {
+    navigator.clipboard.writeText(url);
+    showAlert(document.getElementById('mediaAlert'), '✅ URL copiada! Cole no seu post.', 'success');
+  }
+
+  // ============================================================
+  // COLUMNS
+  // ============================================================
+  async function loadColumns() {
+    const { data: cols } = await sb.from('columns').select('*').eq('collaborator_id', currentUser.id);
+    allColumns = cols || [];
+    const el = document.getElementById('columnsList');
+    if (!cols?.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📰</div><p>Nenhuma coluna criada ainda.</p></div>'; return; }
+    el.innerHTML = cols.map(c => `
+      <div class="column-card">
+        <div class="column-cover">${c.cover_image_url ? `<img src="${c.cover_image_url}" style="width:100%;height:100%;object-fit:cover">` : '📰'}</div>
+        <div class="column-info">
+          <div class="col-title">${c.title}</div>
+          <div class="col-desc">${c.description || 'Sem descrição'}</div>
+          <div class="column-actions">
+            <span style="font-size:0.75rem;color:var(--gold)">${c.category}</span>
+            <button class="btn-danger" style="margin-left:auto" onclick="deleteColumn(${c.id})">Excluir</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function createColumn() {
+    const title = document.getElementById('colTitle').value.trim();
+    const category = document.getElementById('colCategory').value;
+    const description = document.getElementById('colDescription').value.trim();
+    const alertEl = document.getElementById('colAlert');
+
+    if (!title) { showAlert(alertEl, 'Digite o nome da coluna.', 'error'); return; }
+
+    const slug = slugify(title) + '-' + currentUser.id.slice(0, 6);
+    const { error } = await sb.from('columns').insert({ collaborator_id: currentUser.id, title, slug, category, description });
+
+    if (error) { showAlert(alertEl, 'Erro: ' + error.message, 'error'); return; }
+    showAlert(alertEl, '✅ Coluna criada com sucesso!', 'success');
+    document.getElementById('colTitle').value = '';
+    document.getElementById('colDescription').value = '';
+    loadColumns();
+  }
+
+  async function deleteColumn(id) {
+    if (!confirm('Excluir esta coluna?')) return;
+    await sb.from('columns').delete().eq('id', id).eq('collaborator_id', currentUser.id);
+    loadColumns();
+  }
+
+  function generateColSlug() {
+    // just for UX, no visible field needed
+  }
+
+  // ============================================================
+  // CAMERA
+  // ============================================================
+  async function listCameras() {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const cameras = devices.filter(d => d.kind === 'videoinput');
+      const sel = document.getElementById('cameraSelect');
+      sel.innerHTML = '';
+      cameras.forEach((c, i) => {
+        const o = document.createElement('option');
+        o.value = c.deviceId;
+        o.textContent = c.label || `Câmera ${i + 1}`;
+        sel.appendChild(o);
+      });
+    } catch (e) {}
+  }
+
+  async function startCamera() {
+    try {
+      const deviceId = document.getElementById('cameraSelect').value;
+      const constraints = { video: deviceId ? { deviceId: { exact: deviceId } } : { facingMode: 'environment' }, audio: false };
+      cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+      const video = document.getElementById('cameraPreview');
+      video.srcObject = cameraStream;
+      document.getElementById('cameraPlaceholder').style.display = 'none';
+      video.style.display = 'block';
+      document.getElementById('btnStartCamera').disabled = true;
+      document.getElementById('btnCapture').disabled = false;
+      document.getElementById('btnStopCamera').disabled = false;
+      listCameras();
+    } catch (e) {
+      alert('Erro ao acessar câmera: ' + e.message);
+    }
+  }
+
+  function stopCamera() {
+    if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+    const video = document.getElementById('cameraPreview');
+    video.srcObject = null;
+    video.style.display = 'none';
+    document.getElementById('cameraPlaceholder').style.display = 'flex';
+    document.getElementById('btnStartCamera').disabled = false;
+    document.getElementById('btnCapture').disabled = true;
+    document.getElementById('btnStopCamera').disabled = true;
+  }
+
+  async function capturePhoto() {
+    const video = document.getElementById('cameraPreview');
+    const canvas = document.getElementById('photoCanvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    canvas.toBlob(async (blob) => {
+      const path = `photos/${currentUser.id}/${Date.now()}.jpg`;
+      const { data, error } = await sb.storage.from('collab-media').upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+      if (error) { alert('Erro ao salvar foto: ' + error.message); return; }
+
+      const { data: urlData } = sb.storage.from('collab-media').getPublicUrl(path);
+      const gallery = document.getElementById('photoGallery');
+      if (gallery.querySelector('div')) gallery.innerHTML = '';
+
+      const item = document.createElement('div');
+      item.className = 'upload-preview-item';
+      item.innerHTML = `<img src="${urlData.publicUrl}" alt="Foto"><button class="remove-btn" onclick="this.parentElement.remove()">✕</button>`;
+      gallery.prepend(item);
+    }, 'image/jpeg', 0.9);
+  }
+
+  // ============================================================
+  // LIVE
+  // ============================================================
+  async function startLive() {
+    const title = document.getElementById('liveTitle').value.trim();
+    if (!title) { showAlert(document.getElementById('liveAlert'), 'Digite o título da live.', 'error'); return; }
+
+    try {
+      liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const video = document.getElementById('livePreview');
+      video.srcObject = liveStream;
+
+      // Salvar sessão no banco
+      const roomName = `live-${currentUser.id.slice(0, 8)}-${Date.now()}`;
+      await sb.from('live_sessions').insert({
+        host_id: currentUser.id,
+        title,
+        description: document.getElementById('liveDescription').value,
+        room_name: roomName,
+        status: 'live',
+        started_at: new Date().toISOString()
+      });
+
+      document.getElementById('liveSetup').style.display = 'none';
+      document.getElementById('liveStream').style.display = 'block';
+      document.getElementById('liveBadge').style.display = 'inline-flex';
+
+      // Timer
+      liveSeconds = 0;
+      liveTimer = setInterval(() => {
+        liveSeconds++;
+        const m = String(Math.floor(liveSeconds / 60)).padStart(2, '0');
+        const s = String(liveSeconds % 60).padStart(2, '0');
+        document.getElementById('liveTimer').textContent = `${m}:${s}`;
+      }, 1000);
+
+    } catch (e) {
+      showAlert(document.getElementById('liveAlert'), 'Erro ao acessar câmera/microfone: ' + e.message, 'error');
+    }
+  }
+
+  async function stopLive() {
+    if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); liveStream = null; }
+    clearInterval(liveTimer);
+    await sb.from('live_sessions').update({ status: 'ended', ended_at: new Date().toISOString() }).eq('host_id', currentUser.id).eq('status', 'live');
+    document.getElementById('liveSetup').style.display = 'block';
+    document.getElementById('liveStream').style.display = 'none';
+    document.getElementById('liveBadge').style.display = 'none';
+    loadLiveHistory();
+  }
+
+  async function loadLiveHistory() {
+    const { data: lives } = await sb.from('live_sessions').select('*').eq('host_id', currentUser.id).order('created_at', { ascending: false }).limit(10);
+    const el = document.getElementById('liveHistory');
+    if (!lives?.length) { el.innerHTML = '<div style="color:var(--text-muted);font-size:0.88rem">Nenhuma live realizada ainda</div>'; return; }
+    el.innerHTML = '<div class="posts-list">' + lives.map(l => `
+      <div class="post-item">
+        <div class="post-info">
+          <div class="title">${l.title}</div>
+          <div class="meta">${new Date(l.created_at).toLocaleDateString('pt-BR')} · ${l.status === 'ended' ? 'Encerrada' : 'Ao vivo'}</div>
+        </div>
+        <span class="post-status ${l.status === 'live' ? 'status-published' : 'status-draft'}">${l.status === 'live' ? '🔴 Ao vivo' : 'Encerrada'}</span>
+      </div>
+    `).join('') + '</div>';
+  }
+
+  // ============================================================
+  // PROFILE
+  // ============================================================
+  async function saveProfile() {
+    const alertEl = document.getElementById('profileAlert');
+    const { error } = await sb.from('profiles').update({
+      full_name: document.getElementById('profName').value,
+      username: document.getElementById('profUsername').value,
+      collaborator_specialty: document.getElementById('profSpecialty').value,
+      bio: document.getElementById('profBio').value,
+      social_instagram: document.getElementById('profInstagram').value,
+      social_youtube: document.getElementById('profYoutube').value,
+      updated_at: new Date().toISOString()
+    }).eq('id', currentUser.id);
+
+    if (error) showAlert(alertEl, 'Erro: ' + error.message, 'error');
+    else showAlert(alertEl, '✅ Perfil atualizado!', 'success');
+  }
+
+  // ============================================================
+  // LOGOUT
+  // ============================================================
+  async function handleLogout() {
+    await sb.auth.signOut();
+    window.location.href = '/';
+  }
+
+  // ============================================================
+  // EDITOR HELPERS
+  // ============================================================
+  function execCmd(cmd) { document.execCommand(cmd, false, null); document.getElementById('postContent').focus(); }
+  function insertHeading() { document.execCommand('formatBlock', false, 'h2'); }
+  function insertLink() {
+    const url = prompt('URL do link:');
+    if (url) document.execCommand('createLink', false, url);
+  }
+  function insertImage() {
+    const url = prompt('URL da imagem:');
+    if (url) document.execCommand('insertImage', false, url);
+  }
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function showAlert(el, msg, type) {
+    el.textContent = msg;
+    el.className = `alert ${type} visible`;
+    setTimeout(() => el.classList.remove('visible'), 6000);
+  }
+
+  init();
+</script>
+</body>
+</html>
